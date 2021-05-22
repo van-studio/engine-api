@@ -20,7 +20,9 @@ import { UsersModule } from './users/users.module';
   controllers: [
     AppController,
   ],
-  providers: [],
+  providers: [
+
+  ],
 })
 export class AppModule {
 }

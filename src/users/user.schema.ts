@@ -3,7 +3,7 @@ import { Date, Document } from 'mongoose';
 
 export type UserDoc = User & Document;
 
-@Schema()
+@Schema({})
 export class User {
 
   @Prop({
@@ -27,13 +27,15 @@ export class User {
 
   @Prop({
     type: Date,
+    default: Date.now,
   })
-  create_time?: Date;
+  create_time?: number;
 
   @Prop({
     type: Date,
+    default: Date.now,
   })
-  update_time?: Date;
+  update_time?: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

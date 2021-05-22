@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, HttpException, Param, Post, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get,  Param, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserBody } from './types';
 import { argon2id, hash } from 'argon2';
@@ -39,7 +39,7 @@ export class UsersController {
     const exists = await this.user.findOne(body.email);
     if (exists) {
       throw new BadRequestException([
-        `The email of [${body.email}] already exists.`,
+        `The email of [${body.email}] already exists`,
       ]);
     }
     const password = await hash(body.password, {
