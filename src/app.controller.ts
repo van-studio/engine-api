@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post, Put } from '@nestjs/common';
 import { UsersService } from './users/users.service';
 import { AuthBody } from './types';
 import { argon2id, verify } from 'argon2';
@@ -17,7 +17,7 @@ export class AppController {
     };
   }
 
-  @Post('auth')
+  @Post('login')
   async auth(@Body() body: AuthBody) {
     const data = await this.users.findOne(body.email);
     if (!data) {
@@ -33,5 +33,19 @@ export class AppController {
     return {
       message: ['ok'],
     };
+  }
+
+  @Post('refresh_token')
+  async refreshToken() {
+
+  }
+
+  @Put('update')
+  async update() {
+  }
+
+  @Put('email')
+  async email() {
+
   }
 }

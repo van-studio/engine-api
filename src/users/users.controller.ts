@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get,  Param, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserBody } from './types';
 import { argon2id, hash } from 'argon2';
@@ -46,6 +46,7 @@ export class UsersController {
       type: argon2id,
     });
     await this.user.create({
+      username: body.username,
       email: body.email,
       password,
     });

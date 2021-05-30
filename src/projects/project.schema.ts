@@ -1,34 +1,32 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Date, Document } from 'mongoose';
 
-export type UserDoc = User & Document;
+export type ProjectDoc = Project & Document;
 
 @Schema({})
-export class User {
+export class Project {
   @Prop({
     required: true,
     unique: true,
   })
-  username: string;
-
-  @Prop({
-    required: true,
-    unique: true,
-  })
-  email: string;
+  key: string;
 
   @Prop({
     required: true,
   })
-  password: string;
+  name: string;
 
   @Prop()
-  call?: string;
+  description?: string;
 
-  @Prop({
-    default: true,
-  })
-  status?: boolean;
+  @Prop()
+  partner: string[];
+
+  @Prop()
+  star: boolean;
+
+  @Prop()
+  label: string[];
 
   @Prop({
     type: Date,
@@ -43,4 +41,4 @@ export class User {
   update_time?: number;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const ProjectSchema = SchemaFactory.createForClass(Project);

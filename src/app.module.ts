@@ -4,10 +4,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { UsersModule } from './users/users.module';
+import { TeamModule } from './team/team.module';
+import { ProjectsModule } from './projects/projects.module';
 
 @Module({
   imports: [
     UsersModule,
+    TeamModule,
+    ProjectsModule,
     ConfigModule.forRoot(),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -20,9 +24,7 @@ import { UsersModule } from './users/users.module';
   controllers: [
     AppController,
   ],
-  providers: [
-
-  ],
+  providers: [],
 })
 export class AppModule {
 }
