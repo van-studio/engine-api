@@ -21,4 +21,6 @@ export class CreateUserBody {
     },
   )
   password: string;
+
+  call?: string;
 }

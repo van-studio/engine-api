@@ -3,7 +3,9 @@ import { Date, Document } from 'mongoose';
 
 export type UserDoc = User & Document;
 
-@Schema({})
+@Schema({
+  versionKey: false,
+})
 export class User {
   @Prop({
     required: true,
