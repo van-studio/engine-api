@@ -38,7 +38,7 @@ export class UsersController {
         { username: body.username },
         { email: body.email },
       ],
-    });
+    }, false);
     if (exists) {
       const field = body.username === exists.username ? 'username' : 'email';
       throw new BadRequestException([

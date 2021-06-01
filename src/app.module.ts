@@ -1,30 +1,20 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { UsersModule } from './users/users.module';
-import { TeamModule } from './team/team.module';
-import { ProjectsModule } from './projects/projects.module';
+import { CommonModule } from '@common/common.module';
 
 @Module({
   imports: [
     UsersModule,
-    TeamModule,
-    ProjectsModule,
-    ConfigModule.forRoot(),
-    MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async (config: ConfigService) => ({
-        uri: config.get<string>('database'),
-      }),
-      inject: [ConfigService],
+    CommonModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
     }),
   ],
   controllers: [
     AppController,
   ],
-  providers: [],
 })
 export class AppModule {
 }
