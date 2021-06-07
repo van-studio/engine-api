@@ -14,12 +14,12 @@ export class UsersService {
   ) {
   }
 
-  async find(filter: any = {}) {
-    return this.model.find(filter, this.projection);
+  async find(filter: any = {}, projection?: boolean) {
+    return this.model.find(filter, !projection ? null : this.projection);
   }
 
-  async findOne(filter: any) {
-    return this.model.findOne(filter, this.projection);
+  async findOne(filter: any = {}, projection?: boolean) {
+    return this.model.findOne(filter, !projection ? null : this.projection);
   }
 
   async create(data: User) {

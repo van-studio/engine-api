@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller()
 export class AppController {
@@ -7,5 +8,10 @@ export class AppController {
     return {
       msg: 'hi',
     };
+  }
+
+  @UseGuards(AuthGuard('local'))
+  @Post('auth/login')
+  login() {
   }
 }
