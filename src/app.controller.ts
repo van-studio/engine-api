@@ -1,8 +1,15 @@
 import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from './auth/auth.service';
 
 @Controller()
 export class AppController {
+  constructor(
+    private auth: AuthService,
+  ) {
+  }
+
+
   @Get()
   index() {
     return {
@@ -12,6 +19,7 @@ export class AppController {
 
   @UseGuards(AuthGuard('local'))
   @Post('auth/login')
-  login() {
+  login(@Request() req) {
+    return this.auth.login(req.email);
   }
 }
