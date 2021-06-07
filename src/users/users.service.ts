@@ -1,34 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { CloudBaseService } from '@common/cloudbase.service';
-import { Database } from '@cloudbase/node-sdk';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { User, UserDoc } from './user.schema';
 
 @Injectable()
 export class UsersService {
-  private collection: Database.CollectionReference;
-  private projection: any = { password: false };
+  private projection: any = {
+    password: false,
+  };
 
   constructor(
-    private cloudBaseService: CloudBaseService,
+    @InjectModel(User.name) private model: Model<UserDoc>,
   ) {
-    this.collection = cloudBaseService.db.collection('users');
   }
 
-  async find(query: any = {}, projection = true) {
-    const { data } = await this.collection
-      .where(query)
-      .field(projection ? this.projection : null)
-      .get();
-    return data;
+  async find(filter: any = {}) {
+    return this.model.find(filter, this.projection);
   }
 
-  async findOne(query: any = {}, projection = true) {
-    const data = await this.find(query, projection);
-    return data.length !== 0 ? data[0] : undefined;
+  async findOne(filter: any) {
+    return this.model.findOne(filter, this.projection);
   }
 
-  create(data: any) {
-    return this.collection.add(data);
+  async create(data: User) {
+    return this.model.create(data);
   }
-
-
 }
