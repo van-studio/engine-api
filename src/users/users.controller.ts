@@ -6,18 +6,18 @@ import { argon2id, hash } from 'argon2';
 @Controller('users')
 export class UsersController {
   constructor(
-    private user: UsersService,
+    private users: UsersService,
   ) {
   }
 
   @Get()
   lists(): any {
-    return this.user.find();
+    return this.users.find();
   }
 
   @Get(':id')
   get(@Param('id') id: any): any {
-    return this.user.findOne({
+    return this.users.findOne({
       _id: id,
     });
   }
@@ -33,26 +33,21 @@ export class UsersController {
 
   @Post()
   async create(@Body() body: CreateUserBody) {
-    const exists = await this.user.findOne({
-      $or: [
-        { username: body.username },
-        { email: body.email },
-      ],
+    const exists = await this.users.findOne({
+      email: body.email,
     });
     if (exists) {
-      const field = body.username === exists.username ? 'username' : 'email';
       throw new BadRequestException([
-        `The ${field} of [${body[field]}] already exists`,
+        `The email of [${body.email}] already exists`,
       ]);
     }
     const password = await hash(body.password, {
       type: argon2id,
     });
-    await this.user.create({
-      username: body.username,
+    await this.users.create({
       email: body.email,
       password,
-      call: body?.call,
+      name: body?.name,
     });
     return {
       message: ['ok'],

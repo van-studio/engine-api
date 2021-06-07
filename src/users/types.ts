@@ -2,11 +2,6 @@ import { IsEmail, IsNotEmpty, IsString, Length, Matches } from 'class-validator'
 
 export class CreateUserBody {
   @IsNotEmpty()
-  @IsString()
-  @Length(4, 16)
-  username: string;
-
-  @IsNotEmpty()
   @IsEmail()
   email: string;
 
@@ -22,5 +17,5 @@ export class CreateUserBody {
   )
   password: string;
 
-  call?: string;
+  name?: string;
 }

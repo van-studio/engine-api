@@ -7,18 +7,17 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
   constructor(
     private users: UsersService,
-    private jwtService: JwtService,
+    private jwt: JwtService,
   ) {
   }
 
-  async validateUser(email: string, password: string): Promise<any> {
+  async validate(email: string, password: string): Promise<any> {
     const user = await this.users.findOne({
       email,
     });
     if (user && await verify(user.password, password)) {
-      return {
-        email: user.email,
-      };
+      delete user.password;
+      return user;
     }
     return null;
   }
@@ -26,7 +25,7 @@ export class AuthService {
   async login(email: any) {
     const payload = { sub: email };
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwt.sign(payload),
     };
   }
 }

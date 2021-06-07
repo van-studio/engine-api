@@ -11,12 +11,6 @@ export class User {
     required: true,
     unique: true,
   })
-  username: string;
-
-  @Prop({
-    required: true,
-    unique: true,
-  })
   email: string;
 
   @Prop({
@@ -25,7 +19,7 @@ export class User {
   password: string;
 
   @Prop()
-  call?: string;
+  name?: string;
 
   @Prop({
     default: true,

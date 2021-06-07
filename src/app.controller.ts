@@ -10,7 +10,6 @@ export class AppController {
   ) {
   }
 
-
   @Get()
   index() {
     return {
