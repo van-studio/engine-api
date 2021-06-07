@@ -8,18 +8,26 @@ import { CloudBaseService } from '@common/cloudbase.service';
 export class AppController {
   constructor(
     private users: UsersService,
-    private cloudBaseService: CloudBaseService,
+    private cloudBase: CloudBaseService,
   ) {
   }
 
   @Get()
-  index() {
-    this.cloudBaseService.db.collection('test').add({
-      style: {
-        name: '',
-      },
-      name: 'kain',
+  async index() {
+    // const result = await this.cloudBase.DbManager().checkCollectionExists('test');
+    // console.log(result);
+    const result = await this.cloudBase.DbManager().updateCollection('test', {
+      CreateIndexes: [
+        {
+          IndexName: 'index_name',
+          MgoKeySchema: {
+            MgoIsUnique: true,
+            MgoIndexKeys: [{ Name: 'name', Direction: '1' }],
+          },
+        },
+      ],
     });
+    console.log(result);
     return {
       msg: 'hi',
     };
