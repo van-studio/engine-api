@@ -12,14 +12,14 @@ export class UsersController {
 
   @Get()
   lists(): any {
-    return this.users.find();
+    return this.users.find({}, true);
   }
 
   @Get(':id')
   get(@Param('id') id: any): any {
     return this.users.findOne({
       _id: id,
-    });
+    }, true);
   }
 
   @Get('pages/:page')
