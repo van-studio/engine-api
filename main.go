@@ -15,8 +15,8 @@ func main() {
 			bootstrap.LoadConfiguration,
 			bootstrap.InitializeDatabase,
 			bootstrap.HttpServer,
-			service.NewIndex,
-			controller.NewIndex,
+			service.NewMain,
+			controller.NewMain,
 		),
 		fx.Invoke(routes.Initialize),
 	).Run()

@@ -5,8 +5,8 @@ import (
 	"go.uber.org/fx"
 )
 
-type services struct {
+type dependency struct {
 	fx.In
 
-	Index *service.IndexService
+	Main *service.Main
 }

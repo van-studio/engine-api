@@ -6,8 +6,8 @@ import (
 )
 
 func Initialize(
-	router *gin.Engine,
-	index *controller.IndexController,
+	route *gin.Engine,
+	main *controller.Main,
 ) {
-	router.GET("/", index.Index)
+	route.GET("/", main.Index)
 }

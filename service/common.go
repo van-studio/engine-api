@@ -6,7 +6,7 @@ import (
 	"go.uber.org/fx"
 )
 
-type Dependency struct {
+type dependency struct {
 	fx.In
 
 	Config *config.Config
