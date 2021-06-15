@@ -10,4 +10,5 @@ func Initialize(
 	main *controller.Main,
 ) {
 	route.GET("/", main.Index)
+	route.POST("/login", main.Login)
 }
