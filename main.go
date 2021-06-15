@@ -2,7 +2,9 @@ package main
 
 import (
 	"github.com/weplanx/api/bootstrap"
+	"github.com/weplanx/api/controller"
 	"github.com/weplanx/api/routes"
+	"github.com/weplanx/api/service"
 	"go.uber.org/fx"
 )
 
@@ -13,6 +15,8 @@ func main() {
 			bootstrap.LoadConfiguration,
 			bootstrap.InitializeDatabase,
 			bootstrap.HttpServer,
+			service.NewIndex,
+			controller.NewIndex,
 		),
 		fx.Invoke(routes.Initialize),
 	).Run()

@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.uber.org/fx"
-	"gopkg.in/yaml.v3"
+	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"time"
