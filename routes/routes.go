@@ -8,7 +8,11 @@ import (
 func Initialize(
 	route *gin.Engine,
 	main *controller.Main,
+	users *controller.Users,
 ) {
 	route.GET("/", main.Index)
 	route.POST("/login", main.Login)
+
+	route.GET("/users", users.Lists)
+
 }

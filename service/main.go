@@ -8,6 +8,10 @@ func NewMain(i dependency) *Main {
 	return &Main{&i}
 }
 
-func (m *Main) Index() string {
+func (x *Main) Index() string {
 	return "hello"
+}
+
+func (x *Main) Login(email string, password string) {
+	//x.Db.Collection()
 }

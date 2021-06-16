@@ -13,14 +13,14 @@ func NewMain(i dependency) *Main {
 	return &Main{&i}
 }
 
-func (m *Main) Index(c *gin.Context) {
+func (x *Main) Index(c *gin.Context) {
 	c.JSON(200, gin.H{
-		"msg": m.Main.Index(),
+		"msg": x.Main.Index(),
 	})
 	return
 }
 
-func (m *Main) Login(c *gin.Context) {
+func (x *Main) Login(c *gin.Context) {
 	var body struct {
 		Email    string `binding:"required,email"`
 		Password string `binding:"required,min=12,max=20"`
