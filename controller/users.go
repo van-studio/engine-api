@@ -3,6 +3,7 @@ package controller
 import (
 	"context"
 	"github.com/gin-gonic/gin"
+	"github.com/weplanx/api/model"
 	"github.com/weplanx/api/service"
 	"time"
 )
@@ -21,5 +22,65 @@ func (x *Users) Lists(c *gin.Context) {
 
 	data := x.users.Get(ctx)
 
-	c.JSON(200, data)
+	c.JSON(200, gin.H{
+		"message": "ok",
+		"data":    data,
+	})
+}
+
+func (x *Users) Create(c *gin.Context) {
+	var body struct {
+		Email    string `binding:"required,email"`
+		Password string `binding:"required,min=12,max=20"`
+		Name     string
+	}
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	result := x.users.Insert(ctx, model.User{
+		Email:      body.Email,
+		Password:   body.Password,
+		Name:       body.Name,
+		Status:     true,
+		CreateTime: time.Now(),
+		UpdateTime: time.Now(),
+	})
+
+	c.JSON(201, gin.H{
+		"message": "ok",
+		"data": gin.H{
+			"insert": result.InsertedID,
+		},
+	})
+}
+
+func (x *Users) Delete(c *gin.Context) {
+	var path struct {
+		Id string `uri:"id" binding:"required"`
+	}
+	if err := c.ShouldBindUri(&path); err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	result := x.users.Delete(ctx, path.Id)
+
+	c.JSON(200, gin.H{
+		"message": "ok",
+		"data": gin.H{
+			"delete": result.DeletedCount,
+		},
+	})
 }

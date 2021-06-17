@@ -14,5 +14,7 @@ func Initialize(
 	route.POST("/login", main.Login)
 
 	route.GET("/users", users.Lists)
+	route.POST("/users", users.Create)
+	route.DELETE("/users/:id", users.Delete)
 
 }
