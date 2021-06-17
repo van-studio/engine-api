@@ -16,6 +16,7 @@ func Initialize(
 	route.GET("/users", users.Lists)
 	route.GET("/users/:id", users.One)
 	route.POST("/users", users.Create)
+	route.PUT("/users/:id", users.Update)
 	route.DELETE("/users/:id", users.Delete)
 
 }

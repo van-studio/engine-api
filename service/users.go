@@ -7,6 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"time"
 )
 
 type Users struct {
@@ -38,27 +39,31 @@ func (x *Users) First(ctx context.Context, filter interface{}) (data model.User)
 	return
 }
 
-func (x *Users) FirstById(ctx context.Context, id string) (data model.User) {
+func (x *Users) FirstById(ctx context.Context, id string) model.User {
 	objectId, _ := primitive.ObjectIDFromHex(id)
-	data = x.First(ctx, bson.M{
-		"_id": objectId,
-	})
-	return
+	return x.First(ctx, bson.M{"_id": objectId})
 }
 
 func (x *Users) Insert(ctx context.Context, data model.User) (result *mongo.InsertOneResult) {
+	data.CreateTime = time.Now()
+	data.UpdateTime = time.Now()
 	result, _ = x.model.InsertOne(ctx, data)
 	return
 }
 
-func (x *Users) Update() {
+func (x *Users) Update(ctx context.Context, filter interface{}, data model.User) (result *mongo.UpdateResult) {
+	data.UpdateTime = time.Now()
+	result, _ = x.model.ReplaceOne(ctx, filter, data)
+	return
+}
 
+func (x *Users) UpdateById(ctx context.Context, id string, data model.User) *mongo.UpdateResult {
+	objectId, _ := primitive.ObjectIDFromHex(id)
+	return x.Update(ctx, bson.M{"_id": objectId}, data)
 }
 
 func (x *Users) Delete(ctx context.Context, id string) (result *mongo.DeleteResult) {
 	objectId, _ := primitive.ObjectIDFromHex(id)
-	result, _ = x.model.DeleteOne(ctx, bson.M{
-		"_id": objectId,
-	})
+	result, _ = x.model.DeleteOne(ctx, bson.M{"_id": objectId})
 	return
 }

@@ -78,7 +78,43 @@ func (x *Users) Create(c *gin.Context) {
 	c.JSON(201, gin.H{
 		"message": "ok",
 		"data": gin.H{
-			"insert": result.InsertedID,
+			"id": result.InsertedID,
+		},
+	})
+}
+
+func (x *Users) Update(c *gin.Context) {
+	var path struct {
+		Id string `uri:"id" binding:"required"`
+	}
+	if err := c.ShouldBindUri(&path); err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+	var body struct {
+		Password string `json:"password" binding:"omitempty,min=12,max=20"`
+		Name     string `json:"name"`
+	}
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	result := x.users.UpdateById(ctx, path.Id, model.User{
+		Name: body.Name,
+	})
+
+	c.JSON(200, gin.H{
+		"message": "ok",
+		"data": gin.H{
+			"modified": result.ModifiedCount,
 		},
 	})
 }
@@ -102,7 +138,7 @@ func (x *Users) Delete(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "ok",
 		"data": gin.H{
-			"delete": result.DeletedCount,
+			"deleted": result.DeletedCount,
 		},
 	})
 }
