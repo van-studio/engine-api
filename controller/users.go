@@ -28,6 +28,28 @@ func (x *Users) Lists(c *gin.Context) {
 	})
 }
 
+func (x *Users) One(c *gin.Context) {
+	var path struct {
+		Id string `uri:"id"`
+	}
+	if err := c.ShouldBindUri(&path); err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	data := x.users.FirstById(ctx, path.Id)
+
+	c.JSON(200, gin.H{
+		"message": "ok",
+		"data":    data,
+	})
+}
+
 func (x *Users) Create(c *gin.Context) {
 	var body struct {
 		Email    string `binding:"required,email"`

@@ -13,9 +13,9 @@ type Users struct {
 	model *mongo.Collection
 }
 
-func NewUsers(i dependency) *Users {
+func NewUsers(Db *mongo.Database) *Users {
 	return &Users{
-		model: i.Db.Collection("users"),
+		model: Db.Collection("users"),
 	}
 }
 
@@ -29,8 +29,21 @@ func (x *Users) Get(ctx context.Context) (data []model.User) {
 	return
 }
 
-func (x *Users) First() {
+func (x *Users) First(ctx context.Context, filter interface{}) (data model.User) {
+	opts := options.FindOne()
+	opts.Projection = map[string]interface{}{
+		"password": false,
+	}
+	x.model.FindOne(ctx, filter, opts).Decode(&data)
+	return
+}
 
+func (x *Users) FirstById(ctx context.Context, id string) (data model.User) {
+	objectId, _ := primitive.ObjectIDFromHex(id)
+	data = x.First(ctx, bson.M{
+		"_id": objectId,
+	})
+	return
 }
 
 func (x *Users) Insert(ctx context.Context, data model.User) (result *mongo.InsertOneResult) {

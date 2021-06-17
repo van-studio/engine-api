@@ -1,11 +1,10 @@
 package service
 
 type Main struct {
-	*dependency
 }
 
-func NewMain(i dependency) *Main {
-	return &Main{&i}
+func NewMain() *Main {
+	return &Main{}
 }
 
 func (x *Main) Index() string {
@@ -13,5 +12,4 @@ func (x *Main) Index() string {
 }
 
 func (x *Main) Login(email string, password string) {
-	//x.Db.Collection()
 }
