@@ -2,20 +2,21 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/weplanx/api/service"
 	"log"
 )
 
 type Main struct {
-	*dependency
+	main *service.Main
 }
 
-func NewMain(i dependency) *Main {
-	return &Main{&i}
+func NewMain(main *service.Main) *Main {
+	return &Main{main}
 }
 
 func (x *Main) Index(c *gin.Context) {
 	c.JSON(200, gin.H{
-		"msg": x.Main.Index(),
+		"msg": x.main.Index(),
 	})
 	return
 }
