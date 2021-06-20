@@ -2,52 +2,51 @@ package bootstrap
 
 import (
 	"context"
-	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/weplanx/api/config"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.uber.org/fx"
 	"gopkg.in/yaml.v2"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 	"io/ioutil"
 	"os"
 	"time"
 )
 
-var (
-	LoadConfigurationNotExists = errors.New("the configuration file does not exist")
-)
-
 // LoadConfiguration application configuration
 // reference config.example.yml
-func LoadConfiguration() (cfg *config.Config, err error) {
-	if _, err = os.Stat("./config.yml"); os.IsNotExist(err) {
-		err = LoadConfigurationNotExists
+func LoadConfiguration() (cfg *config.Config) {
+	if _, err := os.Stat("./config.yml"); os.IsNotExist(err) {
 		return
 	}
-	var buf []byte
-	buf, err = ioutil.ReadFile("./config.yml")
-	if err != nil {
-		return
-	}
-	err = yaml.Unmarshal(buf, &cfg)
-	if err != nil {
-		return
-	}
+	buf, _ := ioutil.ReadFile("./config.yml")
+	yaml.Unmarshal(buf, &cfg)
 	return
 }
 
 // InitializeDatabase database configuration
 // If it is another database, replace the driver here
-func InitializeDatabase(cfg *config.Config) (db *mongo.Database, err error) {
+// gorm.Open(mysql.Open(option.Dsn),...)
+// reference https://gorm.io/docs/connecting_to_the_database.html
+func InitializeDatabase(cfg *config.Config) (db *gorm.DB) {
 	option := cfg.Database
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(option.Uri))
-	if err != nil {
-		return
+	db, _ = gorm.Open(mysql.Open(option.Dsn), &gorm.Config{
+		NamingStrategy: schema.NamingStrategy{
+			TablePrefix:   option.TablePrefix,
+			SingularTable: true,
+		},
+	})
+	sqlDB, _ := db.DB()
+	if option.MaxIdleConns != 0 {
+		sqlDB.SetMaxIdleConns(option.MaxIdleConns)
 	}
-	db = client.Database(option.Db)
+	if option.MaxOpenConns != 0 {
+		sqlDB.SetMaxOpenConns(option.MaxOpenConns)
+	}
+	if option.ConnMaxLifetime != 0 {
+		sqlDB.SetConnMaxLifetime(time.Second * time.Duration(option.ConnMaxLifetime))
+	}
 	return
 }
 

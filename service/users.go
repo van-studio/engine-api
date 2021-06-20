@@ -30,6 +30,10 @@ func (x *Users) Get(ctx context.Context) (data []model.User) {
 	return
 }
 
+func (x *Users) Page(ctx context.Context) {
+
+}
+
 func (x *Users) First(ctx context.Context, filter interface{}) (data model.User) {
 	opts := options.FindOne()
 	opts.Projection = map[string]interface{}{
