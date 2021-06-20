@@ -1,11 +1,9 @@
 package controller
 
 import (
-	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/weplanx/api/model"
 	"github.com/weplanx/api/service"
-	"time"
 )
 
 type Users struct {
@@ -17,10 +15,7 @@ func NewUsers(users *service.Users) *Users {
 }
 
 func (x *Users) Lists(c *gin.Context) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	data := x.users.Get(ctx)
+	data := x.users.Find()
 
 	c.JSON(200, gin.H{
 		"message": "ok",
@@ -39,10 +34,7 @@ func (x *Users) One(c *gin.Context) {
 		return
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	data := x.users.FirstById(ctx, path.Id)
+	data := x.users.FindOneById(path.Id)
 
 	c.JSON(200, gin.H{
 		"message": "ok",
@@ -63,22 +55,22 @@ func (x *Users) Create(c *gin.Context) {
 		return
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	result := x.users.Insert(ctx, model.User{
-		Email:      body.Email,
-		Password:   body.Password,
-		Name:       body.Name,
-		Status:     true,
-		CreateTime: time.Now(),
-		UpdateTime: time.Now(),
-	})
+	data := model.User{
+		Email:    body.Email,
+		Password: body.Password,
+		Name:     body.Name,
+	}
+	if err := x.users.Create(data).Error; err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
 
 	c.JSON(201, gin.H{
 		"message": "ok",
 		"data": gin.H{
-			"id": result.InsertedID,
+			"id": data.ID,
 		},
 	})
 }
@@ -104,18 +96,12 @@ func (x *Users) Update(c *gin.Context) {
 		return
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	result := x.users.UpdateById(ctx, path.Id, model.User{
+	x.users.UpdateById(path.Id, model.User{
 		Name: body.Name,
 	})
 
 	c.JSON(200, gin.H{
 		"message": "ok",
-		"data": gin.H{
-			"modified": result.ModifiedCount,
-		},
 	})
 }
 
@@ -130,15 +116,9 @@ func (x *Users) Delete(c *gin.Context) {
 		return
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	result := x.users.Delete(ctx, path.Id)
+	x.users.Delete(path.Id)
 
 	c.JSON(200, gin.H{
 		"message": "ok",
-		"data": gin.H{
-			"deleted": result.DeletedCount,
-		},
 	})
 }

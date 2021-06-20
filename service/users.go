@@ -1,73 +1,47 @@
 package service
 
 import (
-	"context"
 	"github.com/weplanx/api/model"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"time"
+	"gorm.io/gorm"
 )
 
 type Users struct {
-	model *mongo.Collection
+	db *gorm.DB
 }
 
-func NewUsers(Db *mongo.Database) *Users {
+func NewUsers(db *gorm.DB) *Users {
 	return &Users{
-		model: Db.Collection("users"),
+		db: db,
 	}
 }
 
-func (x *Users) Get(ctx context.Context) (data []model.User) {
-	opts := options.Find()
-	opts.Projection = map[string]interface{}{
-		"password": false,
-	}
-	cursor, _ := x.model.Find(ctx, bson.M{}, opts)
-	cursor.All(ctx, &data)
+func (x *Users) Find() (data []model.User) {
+	x.db.Omit("password").Find(&data)
 	return
 }
 
-func (x *Users) Page(ctx context.Context) {
-
-}
-
-func (x *Users) First(ctx context.Context, filter interface{}) (data model.User) {
-	opts := options.FindOne()
-	opts.Projection = map[string]interface{}{
-		"password": false,
-	}
-	x.model.FindOne(ctx, filter, opts).Decode(&data)
+func (x *Users) FindOne(query Query) (data model.User) {
+	query(x.db).First(&data)
 	return
 }
 
-func (x *Users) FirstById(ctx context.Context, id string) model.User {
-	objectId, _ := primitive.ObjectIDFromHex(id)
-	return x.First(ctx, bson.M{"_id": objectId})
-}
-
-func (x *Users) Insert(ctx context.Context, data model.User) (result *mongo.InsertOneResult) {
-	data.CreateTime = time.Now()
-	data.UpdateTime = time.Now()
-	result, _ = x.model.InsertOne(ctx, data)
+func (x *Users) FindOneById(id interface{}) (data model.User) {
+	x.db.Omit("password").First(&data, id)
 	return
 }
 
-func (x *Users) Update(ctx context.Context, filter interface{}, data model.User) (result *mongo.UpdateResult) {
-	data.UpdateTime = time.Now()
-	result, _ = x.model.ReplaceOne(ctx, filter, data)
-	return
+func (x *Users) Create(data model.User) *gorm.DB {
+	return x.db.Create(&data)
 }
 
-func (x *Users) UpdateById(ctx context.Context, id string, data model.User) *mongo.UpdateResult {
-	objectId, _ := primitive.ObjectIDFromHex(id)
-	return x.Update(ctx, bson.M{"_id": objectId}, data)
+func (x *Users) Update(query Query, data model.User) *gorm.DB {
+	return query(x.db).Updates(data)
 }
 
-func (x *Users) Delete(ctx context.Context, id string) (result *mongo.DeleteResult) {
-	objectId, _ := primitive.ObjectIDFromHex(id)
-	result, _ = x.model.DeleteOne(ctx, bson.M{"_id": objectId})
-	return
+func (x *Users) UpdateById(id interface{}, data model.User) *gorm.DB {
+	return x.db.Where("id = ?", id).Updates(data)
+}
+
+func (x *Users) Delete(id interface{}) *gorm.DB {
+	return x.db.Delete(&model.User{}, id)
 }

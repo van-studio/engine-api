@@ -33,8 +33,7 @@ func InitializeDatabase(cfg *config.Config) (db *gorm.DB) {
 	option := cfg.Database
 	db, _ = gorm.Open(mysql.Open(option.Dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
-			TablePrefix:   option.TablePrefix,
-			SingularTable: true,
+			TablePrefix: option.TablePrefix,
 		},
 	})
 	sqlDB, _ := db.DB()

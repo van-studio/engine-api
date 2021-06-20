@@ -2,11 +2,15 @@ package main
 
 import (
 	"github.com/weplanx/api/bootstrap"
-	"github.com/weplanx/api/controller"
-	"github.com/weplanx/api/routes"
-	"github.com/weplanx/api/service"
+	"github.com/weplanx/api/model"
 	"go.uber.org/fx"
+	"gorm.io/gorm"
 )
+
+func migrate(db *gorm.DB) {
+	db = db.Debug()
+	db.AutoMigrate(&model.User{})
+}
 
 func main() {
 	fx.New(
@@ -14,10 +18,7 @@ func main() {
 		fx.Provide(
 			bootstrap.LoadConfiguration,
 			bootstrap.InitializeDatabase,
-			bootstrap.HttpServer,
 		),
-		service.Provides,
-		controller.Provides,
-		fx.Invoke(routes.Initialize),
+		fx.Invoke(migrate),
 	).Run()
 }
