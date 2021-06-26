@@ -6,7 +6,7 @@ import (
 )
 
 var Provides = fx.Provide(
-	NewMain,
+	NewAuth,
 	NewUsers,
 )
 

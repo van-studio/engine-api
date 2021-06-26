@@ -3,6 +3,7 @@ module github.com/weplanx/api
 go 1.16
 
 require (
+	github.com/alexedwards/argon2id v0.0.0-20210511081203-7d35d68092b8 // indirect
 	github.com/gin-gonic/gin v1.7.2 // indirect
 	github.com/go-playground/validator/v10 v10.6.1 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect

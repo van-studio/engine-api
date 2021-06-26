@@ -7,16 +7,16 @@ import (
 )
 
 type Main struct {
-	main *service.Main
+	auth *service.Auth
 }
 
-func NewMain(main *service.Main) *Main {
-	return &Main{main}
+func NewMain(auth *service.Auth) *Main {
+	return &Main{auth}
 }
 
 func (x *Main) Index(c *gin.Context) interface{} {
 	return common.Ok{
-		"msg": x.main.Index(),
+		"msg": "hello",
 	}
 }
 
@@ -27,6 +27,13 @@ func (x *Main) Login(c *gin.Context) interface{} {
 	}
 	if err := c.ShouldBindJSON(&body); err != nil {
 		return err
+	}
+	result, err := x.auth.Verify(body.Email, body.Password)
+	if err != nil {
+		return err
+	}
+	if result {
+		// TODO: PASSPORT
 	}
 	return nil
 }
