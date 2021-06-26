@@ -55,11 +55,12 @@ func (x *Users) Create(c *gin.Context) interface{} {
 		Password: body.Password,
 		Name:     body.Name,
 	}
-	if err := x.users.Create(data).Error; err != nil {
-		return err
+	result := x.users.Create(data)
+	if result.Error != nil {
+		return result.Error
 	}
 	return common.Create{
-		"id": data.ID,
+		"affected": result.RowsAffected,
 	}
 }
 
