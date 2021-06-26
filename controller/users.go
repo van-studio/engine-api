@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/weplanx/api/common"
 	"github.com/weplanx/api/model"
 	"github.com/weplanx/api/service"
 )
@@ -19,115 +20,80 @@ func (x *Users) Lists(c *gin.Context) interface{} {
 	if err != nil {
 		return err
 	}
-
-	return gin.H{
-		"message": "ok",
-		"data":    data,
+	return common.Ok{
+		"data": data,
 	}
 }
 
-func (x *Users) One(c *gin.Context) {
+func (x *Users) One(c *gin.Context) interface{} {
 	var path struct {
 		Id string `uri:"id"`
 	}
 	if err := c.ShouldBindUri(&path); err != nil {
-		c.JSON(400, gin.H{
-			"message": err.Error(),
-		})
-		return
+		return err
 	}
-
-	data := x.users.FindOneById(path.Id)
-
-	c.JSON(200, gin.H{
-		"message": "ok",
-		"data":    data,
-	})
+	data, err := x.users.FindOneById(path.Id)
+	if err != nil {
+		return err
+	}
+	return common.Ok{
+		"data": data,
+	}
 }
 
-func (x *Users) Create(c *gin.Context) {
+func (x *Users) Create(c *gin.Context) interface{} {
 	var body struct {
 		Email    string `binding:"required,email"`
 		Password string `binding:"required,min=12,max=20"`
 		Name     string
 	}
 	if err := c.ShouldBindJSON(&body); err != nil {
-		c.JSON(400, gin.H{
-			"message": err.Error(),
-		})
-		return
+		return err
 	}
-
 	data := model.User{
 		Email:    body.Email,
 		Password: body.Password,
 		Name:     body.Name,
 	}
 	if err := x.users.Create(data).Error; err != nil {
-		c.JSON(400, gin.H{
-			"message": err.Error(),
-		})
-		return
+		return err
 	}
-
-	c.JSON(201, gin.H{
-		"message": "ok",
-		"data": gin.H{
-			"id": data.ID,
-		},
-	})
+	return common.Create{
+		"id": data.ID,
+	}
 }
 
-func (x *Users) Update(c *gin.Context) {
+func (x *Users) Update(c *gin.Context) interface{} {
 	var path struct {
 		Id string `uri:"id" binding:"required"`
 	}
 	if err := c.ShouldBindUri(&path); err != nil {
-		c.JSON(400, gin.H{
-			"message": err.Error(),
-		})
-		return
+		return err
 	}
 	var body struct {
 		Password string `json:"password" binding:"omitempty,min=12,max=20"`
 		Name     string `json:"name"`
 	}
 	if err := c.ShouldBindJSON(&body); err != nil {
-		c.JSON(400, gin.H{
-			"message": err.Error(),
-		})
-		return
+		return err
 	}
-
-	x.users.UpdateById(path.Id, model.User{
+	if err := x.users.UpdateById(path.Id, model.User{
 		Name: body.Name,
-	})
-
-	c.JSON(200, gin.H{
-		"message": "ok",
-	})
+	}).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
-func (x *Users) Delete(c *gin.Context) {
+func (x *Users) Delete(c *gin.Context) interface{} {
 	var path struct {
 		Id string `uri:"id" binding:"required"`
 	}
-
 	if err := c.ShouldBindUri(&path); err != nil {
-		c.JSON(400, gin.H{
-			"message": err.Error(),
-		})
-		return
+		return err
 	}
-
 	if err := x.users.Delete(path.Id).Error; err != nil {
-		c.JSON(400, gin.H{
-			"message": err.Error(),
-		})
-		return
+		return err
 	}
-
-	c.JSON(200, gin.H{
-		"message": "ok",
-	})
+	return nil
 }

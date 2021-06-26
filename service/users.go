@@ -20,13 +20,13 @@ func (x *Users) Find() (data []model.User, err error) {
 	return
 }
 
-func (x *Users) FindOne(query Query) (data model.User) {
-	query(x.db).First(&data)
+func (x *Users) FindOne(query Query) (data model.User, err error) {
+	err = query(x.db).First(&data).Error
 	return
 }
 
-func (x *Users) FindOneById(id interface{}) (data model.User) {
-	x.db.Omit("password").First(&data, id)
+func (x *Users) FindOneById(id interface{}) (data model.User, err error) {
+	err = x.db.Omit("password").First(&data, id).Error
 	return
 }
 

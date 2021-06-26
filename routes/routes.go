@@ -2,7 +2,9 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/weplanx/api/common"
 	"github.com/weplanx/api/controller"
+	"net/http"
 )
 
 func Initialize(
@@ -34,16 +36,19 @@ func bind(handlerFn interface{}) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if fn, ok := handlerFn.(func(ctx *gin.Context) interface{}); ok {
 			switch result := fn(ctx).(type) {
-			case gin.H:
-				ctx.JSON(200, result)
+			case common.Ok:
+				ctx.JSON(http.StatusOK, result)
+				break
+			case common.Create:
+				ctx.JSON(http.StatusCreated, result)
 				break
 			case error:
-				ctx.JSON(400, gin.H{
+				ctx.JSON(http.StatusBadRequest, gin.H{
 					"msg": result.Error(),
 				})
 				break
 			default:
-				ctx.JSON(200, gin.H{
+				ctx.JSON(http.StatusNoContent, gin.H{
 					"msg": "ok",
 				})
 			}
