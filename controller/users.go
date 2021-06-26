@@ -16,7 +16,7 @@ func NewUsers(users *service.Users) *Users {
 }
 
 func (x *Users) Lists(c *gin.Context) interface{} {
-	data, err := x.users.Find()
+	data, err := x.users.FindMany()
 	if err != nil {
 		return err
 	}
@@ -25,14 +25,14 @@ func (x *Users) Lists(c *gin.Context) interface{} {
 	}
 }
 
-func (x *Users) One(c *gin.Context) interface{} {
+func (x *Users) Get(c *gin.Context) interface{} {
 	var path struct {
 		Id string `uri:"id"`
 	}
 	if err := c.ShouldBindUri(&path); err != nil {
 		return err
 	}
-	data, err := x.users.FindOneById(path.Id)
+	data, err := x.users.FindById(path.Id)
 	if err != nil {
 		return err
 	}
@@ -60,7 +60,7 @@ func (x *Users) Create(c *gin.Context) interface{} {
 		return result.Error
 	}
 	return common.Create{
-		"affected": result.RowsAffected,
+		"result": result.RowsAffected,
 	}
 }
 
@@ -78,12 +78,16 @@ func (x *Users) Update(c *gin.Context) interface{} {
 	if err := c.ShouldBindJSON(&body); err != nil {
 		return err
 	}
-	if err := x.users.UpdateById(path.Id, model.User{
-		Name: body.Name,
-	}).Error; err != nil {
-		return err
+	result := x.users.UpdateById(path.Id, model.User{
+		Password: body.Password,
+		Name:     body.Name,
+	})
+	if result.Error != nil {
+		return result.Error
 	}
-	return nil
+	return common.Ok{
+		"result": result.RowsAffected,
+	}
 }
 
 func (x *Users) Delete(c *gin.Context) interface{} {
@@ -93,8 +97,11 @@ func (x *Users) Delete(c *gin.Context) interface{} {
 	if err := c.ShouldBindUri(&path); err != nil {
 		return err
 	}
-	if err := x.users.Delete(path.Id).Error; err != nil {
-		return err
+	result := x.users.Delete(path.Id)
+	if result.Error != nil {
+		return result.Error
 	}
-	return nil
+	return common.Ok{
+		"result": result.RowsAffected,
+	}
 }

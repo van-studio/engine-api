@@ -1,7 +1,6 @@
 package service
 
 import (
-	"github.com/alexedwards/argon2id"
 	"github.com/weplanx/api/model"
 	"gorm.io/gorm"
 )
@@ -16,7 +15,7 @@ func NewUsers(db *gorm.DB) *Users {
 	}
 }
 
-func (x *Users) Find() (data []model.User, err error) {
+func (x *Users) FindMany() (data []model.User, err error) {
 	err = x.db.Omit("password").Find(&data).Error
 	return
 }
@@ -26,22 +25,16 @@ func (x *Users) FindOne(query Query) (data model.User, err error) {
 	return
 }
 
-func (x *Users) FindOneById(id interface{}) (data model.User, err error) {
+func (x *Users) FindById(id interface{}) (data model.User, err error) {
 	err = x.db.Omit("password").First(&data, id).Error
 	return
 }
 
 func (x *Users) Create(data model.User) *gorm.DB {
-	if data.Password != "" {
-		data.Password, _ = argon2id.CreateHash(data.Password, argon2id.DefaultParams)
-	}
 	return x.db.Create(&data)
 }
 
 func (x *Users) Update(query Query, data model.User) *gorm.DB {
-	if data.Password != "" {
-		data.Password, _ = argon2id.CreateHash(data.Password, argon2id.DefaultParams)
-	}
 	return query(x.db).Updates(data)
 }
 
