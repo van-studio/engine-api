@@ -15,8 +15,8 @@ func NewUsers(db *gorm.DB) *Users {
 	}
 }
 
-func (x *Users) Find() (data []model.User) {
-	x.db.Omit("password").Find(&data)
+func (x *Users) Find() (data []model.User, err error) {
+	err = x.db.Omit("password").Find(&data).Error
 	return
 }
 

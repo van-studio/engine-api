@@ -14,13 +14,16 @@ func NewUsers(users *service.Users) *Users {
 	return &Users{users}
 }
 
-func (x *Users) Lists(c *gin.Context) {
-	data := x.users.Find()
+func (x *Users) Lists(c *gin.Context) interface{} {
+	data, err := x.users.Find()
+	if err != nil {
+		return err
+	}
 
-	c.JSON(200, gin.H{
+	return gin.H{
 		"message": "ok",
 		"data":    data,
-	})
+	}
 }
 
 func (x *Users) One(c *gin.Context) {
@@ -109,6 +112,7 @@ func (x *Users) Delete(c *gin.Context) {
 	var path struct {
 		Id string `uri:"id" binding:"required"`
 	}
+
 	if err := c.ShouldBindUri(&path); err != nil {
 		c.JSON(400, gin.H{
 			"message": err.Error(),
@@ -116,7 +120,12 @@ func (x *Users) Delete(c *gin.Context) {
 		return
 	}
 
-	x.users.Delete(path.Id)
+	if err := x.users.Delete(path.Id).Error; err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
 
 	c.JSON(200, gin.H{
 		"message": "ok",
