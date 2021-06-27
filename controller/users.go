@@ -74,6 +74,7 @@ func (x *Users) Update(c *gin.Context) interface{} {
 	var body struct {
 		Password string `json:"password" binding:"omitempty,min=12,max=20"`
 		Name     string `json:"name"`
+		Status   bool   `json:"status"`
 	}
 	if err := c.ShouldBindJSON(&body); err != nil {
 		return err
@@ -81,6 +82,7 @@ func (x *Users) Update(c *gin.Context) interface{} {
 	result := x.users.UpdateById(path.Id, model.User{
 		Password: body.Password,
 		Name:     body.Name,
+		Status:   &body.Status,
 	})
 	if result.Error != nil {
 		return result.Error
