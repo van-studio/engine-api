@@ -1,4 +1,4 @@
-listen: ':3000'
+listen: ':5000'
 database:
   dsn: host=localhost user=postgres password= dbname=weplanx port=5432 sslmode=disable TimeZone=Asia/Shanghai
   max_idle_conns: 10
