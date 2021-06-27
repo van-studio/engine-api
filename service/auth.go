@@ -3,24 +3,21 @@ package service
 import (
 	"github.com/alexedwards/argon2id"
 	"gorm.io/gorm"
-	"log"
 )
 
 type Auth struct {
 	users *Users
 }
 
-func NewAuth() *Auth {
-	return &Auth{}
+func NewAuth(users *Users) *Auth {
+	return &Auth{users: users}
 }
 
 func (x *Auth) Verify(email string, password string) (result bool, err error) {
-	log.Println(email)
-	log.Println(password)
 	data, err := x.users.FindOne(func(tx *gorm.DB) *gorm.DB {
 		return tx.
 			Where("email = ?", email).
-			Where("status = ?", 1)
+			Where("status = ?", true)
 	})
 	if err != nil {
 		return
