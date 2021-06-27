@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/alexedwards/argon2id"
 	"gorm.io/gorm"
+	"log"
 )
 
 type Auth struct {
@@ -14,6 +15,8 @@ func NewAuth() *Auth {
 }
 
 func (x *Auth) Verify(email string, password string) (result bool, err error) {
+	log.Println(email)
+	log.Println(password)
 	data, err := x.users.FindOne(func(tx *gorm.DB) *gorm.DB {
 		return tx.
 			Where("email = ?", email).
