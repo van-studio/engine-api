@@ -18,6 +18,7 @@ func Initialize(
 
 		{"GET", "/users", users.Lists},
 		{"GET", "/users/:id", users.Get},
+		//{"POST", "/users/pages"},
 		{"POST", "/users", users.Create},
 		{"PUT", "/users/:id", users.Update},
 		{"DELETE", "/users/:id", users.Delete},

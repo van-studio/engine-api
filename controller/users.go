@@ -41,6 +41,20 @@ func (x *Users) Get(c *gin.Context) interface{} {
 	}
 }
 
+func (x *Users) Page(c *gin.Context) interface{} {
+	var body common.ListByPage
+	if err := c.ShouldBindJSON(&body); err != nil {
+		return err
+	}
+	data, err := x.users.Page(body)
+	if err != nil {
+		return err
+	}
+	return common.Ok{
+		"data": data,
+	}
+}
+
 func (x *Users) Create(c *gin.Context) interface{} {
 	var body struct {
 		Email    string `binding:"required,email"`

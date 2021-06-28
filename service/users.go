@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/alexedwards/argon2id"
+	"github.com/weplanx/api/common"
 	"github.com/weplanx/api/model"
 	"gorm.io/gorm"
 )
@@ -28,6 +29,15 @@ func (x *Users) FindOne(query Query) (data model.User, err error) {
 
 func (x *Users) FindById(id interface{}) (data model.User, err error) {
 	err = x.db.Omit("password").First(&data, id).Error
+	return
+}
+
+func (x *Users) Page(p common.ListByPage) (data []model.User, err error) {
+	page := p.Pagination
+	err = x.db.
+		Limit(page.Limit).
+		Offset((page.Index - 1) * page.Limit).
+		Find(&data).Error
 	return
 }
 
