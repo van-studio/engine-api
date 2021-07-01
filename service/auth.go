@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/alexedwards/argon2id"
+	"github.com/kainonly/gin-helper/hash"
 	"gorm.io/gorm"
 )
 
@@ -22,7 +22,7 @@ func (x *Auth) Verify(email string, password string) (result bool, err error) {
 	if err != nil {
 		return
 	}
-	result, err = argon2id.ComparePasswordAndHash(password, data.Password)
+	result, err = hash.Verify(password, data.Password)
 	if err != nil {
 		return
 	}

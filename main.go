@@ -1,6 +1,7 @@
 package main
 
 import (
+	bit "github.com/kainonly/gin-bit"
 	"github.com/weplanx/api/bootstrap"
 	"github.com/weplanx/api/controller"
 	"github.com/weplanx/api/routes"
@@ -15,6 +16,7 @@ func main() {
 			bootstrap.LoadConfiguration,
 			bootstrap.InitializeDatabase,
 			bootstrap.HttpServer,
+			bit.Initialize,
 		),
 		service.Provides,
 		controller.Provides,

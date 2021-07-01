@@ -2,7 +2,6 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/weplanx/api/common"
 	"github.com/weplanx/api/service"
 )
 
@@ -15,7 +14,7 @@ func NewMain(auth *service.Auth) *Main {
 }
 
 func (x *Main) Index(c *gin.Context) interface{} {
-	return common.Ok{
+	return gin.H{
 		"msg": "hello",
 	}
 }

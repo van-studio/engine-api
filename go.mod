@@ -1,13 +1,13 @@
 module github.com/weplanx/api
 
-go 1.16
+go 1.13
 
 require (
-	github.com/alexedwards/argon2id v0.0.0-20210511081203-7d35d68092b8
 	github.com/gin-gonic/gin v1.7.2
-	github.com/go-playground/validator/v10 v10.6.1 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/json-iterator/go v1.1.11 // indirect
+	github.com/kainonly/gin-bit v1.0.0-beta
+	github.com/kainonly/gin-helper v1.0.0-beta
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/lib/pq v1.6.0 // indirect
 	github.com/mattn/go-isatty v0.0.13 // indirect
