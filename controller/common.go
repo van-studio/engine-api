@@ -7,4 +7,5 @@ import (
 var Provides = fx.Provide(
 	NewMain,
 	NewUsers,
+	NewProjects,
 )

@@ -21,4 +21,14 @@ func Initialize(
 		rUsers.POST("/edit", bit.Bind(users.Edit))
 		rUsers.POST("/delete", bit.Bind(users.Delete))
 	}
+	rProjects := r.Group("projects")
+	{
+		rProjects.POST("/originLists", bit.Bind(users.OriginLists))
+		rProjects.POST("/lists", bit.Bind(users.Lists))
+		rProjects.POST("/get", bit.Bind(users.Get))
+		rProjects.POST("/add", bit.Bind(users.Add))
+		rProjects.POST("/edit", bit.Bind(users.Edit))
+		rProjects.POST("/delete", bit.Bind(users.Delete))
+	}
+
 }
