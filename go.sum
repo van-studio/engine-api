@@ -237,8 +237,8 @@ github.com/jtolds/gls v4.20.0+incompatible/go.mod h1:QJZ7F/aHp+rZTRtaJ1ow/lLfFfV
 github.com/julienschmidt/httprouter v1.2.0/go.mod h1:SYymIcj16QtmaHHD7aYtjjsJG7VTCxuUUipMqKk8s4w=
 github.com/kainonly/gin-bit v1.0.1-beta h1:tC7lNeOU6hYaoos8eLhRNh26bx6DKMiLTmx5Z8gT65Y=
 github.com/kainonly/gin-bit v1.0.1-beta/go.mod h1:xwnJzQO6JzVKMgqlS6IaYOF8p3nihlzL59m5gykx1hE=
-github.com/kainonly/gin-helper v1.0.1-beta h1:El/HWDKzWMij4V68u2syapEhVpglJGKPlTDXM1HD3gg=
-github.com/kainonly/gin-helper v1.0.1-beta/go.mod h1:BXIpGiJL4yrjYo3h2Vff+iKAJ53LEvDK9Sq6nc+Gjcc=
+github.com/kainonly/gin-helper v1.0.2-beta h1:rmessku3nunwvb56N5xesinYMLA3JUGFzFrBoLv9ZRc=
+github.com/kainonly/gin-helper v1.0.2-beta/go.mod h1:BXIpGiJL4yrjYo3h2Vff+iKAJ53LEvDK9Sq6nc+Gjcc=
 github.com/kisielk/errcheck v1.1.0/go.mod h1:EZBBE59ingxPouuu3KfxchcWSUPOHkagtvWXihfKN4Q=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=

@@ -48,3 +48,17 @@ func (x *Main) Login(c *gin.Context) interface{} {
 	}
 	return "ok"
 }
+
+func (x *Main) Verify(c *gin.Context) interface{} {
+	if err := x.auth.Verify(c); err != nil {
+		return err
+	}
+	return "ok"
+}
+
+func (x *Main) Logout(c *gin.Context) interface{} {
+	if err := x.auth.Destory(c); err != nil {
+		return err
+	}
+	return "ok"
+}
