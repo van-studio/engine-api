@@ -1,11 +1,15 @@
 package config
 
-import "github.com/kainonly/gin-helper/authx"
+import (
+	"github.com/kainonly/gin-helper/authx"
+	"github.com/kainonly/gin-helper/cookie"
+)
 
 type Config struct {
-	Listen   string       `yaml:"listen"`
-	Auth     authx.Option `yaml:"auth"`
-	Database Database     `yaml:"database"`
+	Listen   string        `yaml:"listen"`
+	Database Database      `yaml:"database"`
+	Auth     authx.Option  `yaml:"auth"`
+	Cookie   cookie.Option `yaml:"cookie"`
 }
 
 type Database struct {

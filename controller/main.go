@@ -20,7 +20,7 @@ func NewMain(users *service.Users, auth *authx.Auth) *Main {
 
 func (x *Main) Index(c *gin.Context) interface{} {
 	return gin.H{
-		"msg": "hello",
+		"msg": "hi",
 	}
 }
 
@@ -43,9 +43,8 @@ func (x *Main) Login(c *gin.Context) interface{} {
 	if result, err := hash.Verify(body.Password, data.Password); err != nil || !result {
 		return errors.New("the account does not exist or the password is incorrect")
 	}
-	token, err := x.auth.Create(c, data.Email, data.ID, map[string]interface{}{})
-	if err != nil {
+	if _, err := x.auth.Create(c, data.Email, data.ID, map[string]interface{}{}); err != nil {
 		return err
 	}
-	return token
+	return "ok"
 }
