@@ -10,8 +10,11 @@ func Initialize(
 	r *gin.Engine,
 	main *controller.Main,
 	users *controller.Users,
+	projects *controller.Projects,
 ) {
 	r.GET("/", bit.Bind(main.Index))
+	r.POST("/login", bit.Bind(main.Login))
+
 	rUsers := r.Group("/users")
 	{
 		rUsers.POST("/originLists", bit.Bind(users.OriginLists))
@@ -23,12 +26,12 @@ func Initialize(
 	}
 	rProjects := r.Group("projects")
 	{
-		rProjects.POST("/originLists", bit.Bind(users.OriginLists))
-		rProjects.POST("/lists", bit.Bind(users.Lists))
-		rProjects.POST("/get", bit.Bind(users.Get))
-		rProjects.POST("/add", bit.Bind(users.Add))
-		rProjects.POST("/edit", bit.Bind(users.Edit))
-		rProjects.POST("/delete", bit.Bind(users.Delete))
+		rProjects.POST("/originLists", bit.Bind(projects.OriginLists))
+		rProjects.POST("/lists", bit.Bind(projects.Lists))
+		rProjects.POST("/get", bit.Bind(projects.Get))
+		rProjects.POST("/add", bit.Bind(projects.Add))
+		rProjects.POST("/edit", bit.Bind(projects.Edit))
+		rProjects.POST("/delete", bit.Bind(projects.Delete))
 	}
 
 }

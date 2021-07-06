@@ -27,12 +27,8 @@ func (x *Main) Login(c *gin.Context) interface{} {
 	if err := c.ShouldBindJSON(&body); err != nil {
 		return err
 	}
-	result, err := x.auth.Verify(body.Email, body.Password)
-	if err != nil {
+	if err := x.auth.Verify(body.Email, body.Password); err != nil {
 		return err
 	}
-	if result {
-		// TODO: PASSPORT
-	}
-	return nil
+	return "ok"
 }
