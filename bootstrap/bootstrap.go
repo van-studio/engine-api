@@ -2,7 +2,9 @@ package bootstrap
 
 import (
 	"context"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/kainonly/gin-helper/authx"
 	"github.com/weplanx/api/config"
 	"go.uber.org/fx"
 	"gopkg.in/yaml.v2"
@@ -10,6 +12,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 	"io/ioutil"
+	"log"
 	"os"
 	"time"
 )
@@ -47,6 +50,16 @@ func InitializeDatabase(cfg *config.Config) (db *gorm.DB) {
 		sqlDB.SetConnMaxLifetime(time.Second * time.Duration(option.ConnMaxLifetime))
 	}
 	return
+}
+
+func InitializeAuth(cfg *config.Config) *authx.Auth {
+	option := cfg.Auth
+	log.Println(option)
+	return authx.Make(cfg.Auth, authx.Args{
+		Method:    jwt.SigningMethodHS256,
+		UseCookie: nil,
+		RefreshFn: nil,
+	})
 }
 
 // HttpServer Start http service

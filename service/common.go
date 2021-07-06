@@ -8,6 +8,5 @@ import (
 type Query func(tx *gorm.DB) *gorm.DB
 
 var Provides = fx.Provide(
-	NewAuth,
 	NewUsers,
 )

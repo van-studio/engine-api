@@ -1,16 +1,21 @@
 package controller
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
+	"github.com/kainonly/gin-helper/authx"
+	"github.com/kainonly/gin-helper/hash"
 	"github.com/weplanx/api/service"
+	"gorm.io/gorm"
 )
 
 type Main struct {
-	auth *service.Auth
+	users *service.Users
+	auth  *authx.Auth
 }
 
-func NewMain(auth *service.Auth) *Main {
-	return &Main{auth}
+func NewMain(users *service.Users, auth *authx.Auth) *Main {
+	return &Main{users, auth}
 }
 
 func (x *Main) Index(c *gin.Context) interface{} {
@@ -27,8 +32,20 @@ func (x *Main) Login(c *gin.Context) interface{} {
 	if err := c.ShouldBindJSON(&body); err != nil {
 		return err
 	}
-	if err := x.auth.Verify(body.Email, body.Password); err != nil {
+	data, err := x.users.FindOne(func(tx *gorm.DB) *gorm.DB {
+		return tx.
+			Where("email = ?", body.Email).
+			Where("status = ?", true)
+	})
+	if err != nil {
 		return err
 	}
-	return "ok"
+	if result, err := hash.Verify(body.Password, data.Password); err != nil || !result {
+		return errors.New("the account does not exist or the password is incorrect")
+	}
+	token, err := x.auth.Create(c, data.Email, data.ID, map[string]interface{}{})
+	if err != nil {
+		return err
+	}
+	return token
 }

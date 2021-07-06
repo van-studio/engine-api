@@ -1,8 +1,11 @@
 package config
 
+import "github.com/kainonly/gin-helper/authx"
+
 type Config struct {
-	Listen   string   `yaml:"listen"`
-	Database Database `yaml:"database"`
+	Listen   string       `yaml:"listen"`
+	Auth     authx.Option `yaml:"auth"`
+	Database Database     `yaml:"database"`
 }
 
 type Database struct {

@@ -50,6 +50,7 @@ github.com/creack/pty v1.1.7/go.mod h1:lj5s0c3V2DBrqTV7llrYr5NG6My20zk30Fl46Y7Do
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/dgrijalva/jwt-go v3.2.0+incompatible h1:7qlOGliEKZXTDg6OTjfoBKDXWrumCAMpl/TFQ4/5kLM=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
 github.com/dustin/go-humanize v0.0.0-20171111073723-bb3d318650d4/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
 github.com/eapache/go-resiliency v1.1.0/go.mod h1:kFI+JgMyC7bLPUVY133qvEBtVayf5mFgVsvEsIPBvNs=
@@ -234,10 +235,10 @@ github.com/json-iterator/go v1.1.11 h1:uVUAXhF2To8cbw/3xN3pxj6kk7TYKs98NIrTqPlMW
 github.com/json-iterator/go v1.1.11/go.mod h1:KdQUCv79m/52Kvf8AW2vK1V8akMuk1QjK/uOdHXbAo4=
 github.com/jtolds/gls v4.20.0+incompatible/go.mod h1:QJZ7F/aHp+rZTRtaJ1ow/lLfFfVYBRgL+9YlvaHOwJU=
 github.com/julienschmidt/httprouter v1.2.0/go.mod h1:SYymIcj16QtmaHHD7aYtjjsJG7VTCxuUUipMqKk8s4w=
-github.com/kainonly/gin-bit v1.0.0-beta h1:HKOQ5c8GGqCMS6VQ/jT4amLLj9j95+rmS6Y5dJFPpJA=
-github.com/kainonly/gin-bit v1.0.0-beta/go.mod h1:xwnJzQO6JzVKMgqlS6IaYOF8p3nihlzL59m5gykx1hE=
-github.com/kainonly/gin-helper v1.0.0-beta h1:kUI2W9yr3vJHWna8fEa+iWaw/1xkTPNx3W2uj3rfxg0=
-github.com/kainonly/gin-helper v1.0.0-beta/go.mod h1:BXIpGiJL4yrjYo3h2Vff+iKAJ53LEvDK9Sq6nc+Gjcc=
+github.com/kainonly/gin-bit v1.0.1-beta h1:tC7lNeOU6hYaoos8eLhRNh26bx6DKMiLTmx5Z8gT65Y=
+github.com/kainonly/gin-bit v1.0.1-beta/go.mod h1:xwnJzQO6JzVKMgqlS6IaYOF8p3nihlzL59m5gykx1hE=
+github.com/kainonly/gin-helper v1.0.1-beta h1:El/HWDKzWMij4V68u2syapEhVpglJGKPlTDXM1HD3gg=
+github.com/kainonly/gin-helper v1.0.1-beta/go.mod h1:BXIpGiJL4yrjYo3h2Vff+iKAJ53LEvDK9Sq6nc+Gjcc=
 github.com/kisielk/errcheck v1.1.0/go.mod h1:EZBBE59ingxPouuu3KfxchcWSUPOHkagtvWXihfKN4Q=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
