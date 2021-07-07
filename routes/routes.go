@@ -14,8 +14,8 @@ func Initialize(
 ) {
 	r.GET("/", bit.Bind(main.Index))
 	r.POST("/login", bit.Bind(main.Login))
-	r.POST("/verify", bit.Bind(main.Verify))
-	r.POST("/logout", bit.Bind(main.Logout))
+	r.GET("/verify", bit.Bind(main.Verify))
+	r.DELETE("/logout", bit.Bind(main.Logout))
 
 	rUsers := r.Group("/users")
 	{
