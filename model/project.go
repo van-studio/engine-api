@@ -3,7 +3,7 @@ package model
 import "time"
 
 type Project struct {
-	ID          uint      `json:"_id"`
+	ID          uint64    `json:"_id"`
 	Key         string    `gorm:"varchar(20);unique" json:"key"`
 	Name        string    `gorm:"type:varchar(50)" json:"name"`
 	Description string    `gorm:"type:text" json:"description"`
