@@ -1,6 +1,6 @@
 listen: ':5000'
 database:
-  dsn: host=localhost user=postgres password= dbname=weplanx port=5432 sslmode=disable TimeZone=Asia/Shanghai
+  dsn: root:pass@tcp(localhost:3306)/weplanx?charset=utf8mb4&parseTime=True&loc=Local
   max_idle_conns: 10
   max_open_conns: 100
   conn_max_lifetime: 3600
